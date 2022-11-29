@@ -28,3 +28,58 @@ app.use(function (
 	);
 	inNext();
 });
+
+app.get("/mailboxes", async (req: Request, resp: Response) => {
+	try {
+		const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
+		const mailboxes: IMAP.IMailbox[] = await imapWorker.listMailboxes();
+		resp.json(mailboxes);
+	} catch (error) {
+		resp.send("error");
+	}
+});
+
+app.get("/mailboxes/:mailbox", async (req: Request, resp: Response) => {
+	try {
+		const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
+		const messages: IMAP.IMessage[] = await imapWorker.listMessages({
+			mailbox: req.params.mailbox,
+		});
+	} catch (error) {
+		resp.send("error");
+	}
+});
+
+app.get("/messages/:mailbox/:id", async (req: Request, resp: Response) => {
+	try {
+		const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
+		const messageBody: string = await imapWorker.getMessageBody({
+			mailbox: req.params.mailbox,
+			id: parseInt(req.params.id, 10),
+		});
+	} catch (error) {
+		resp.send("error");
+	}
+});
+
+app.delete("/messages/:mailbox/:id", async (req: Request, resp: Response) => {
+	try {
+		const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
+		await imapWorker.deleteMessage({
+			mailbox: req.params.mailbox,
+			id: parseInt(req.params.id, 10),
+		});
+	} catch (error) {
+		resp.send("error");
+	}
+});
+
+app.post("/messages", async (req: Request, resp: Response) => {
+	try {
+		const smtpWorker: SMTP.Worker = new SMTP.Worker(serverInfo);
+		await smtpWorker.sendMessage(req.body);
+		resp.send("ok");
+	} catch (error) {
+		resp.send("error");
+	}
+});
