@@ -83,3 +83,33 @@ app.post("/messages", async (req: Request, resp: Response) => {
 		resp.send("error");
 	}
 });
+
+app.get("/contacts", async (req: Request, resp: Response) => {
+	try {
+		const contactsWorker: Contacts.Worker = new Contacts.Worker();
+		const contacts: IContact[] = await contactsWorker.listContacts();
+		resp.json(contacts);
+	} catch (error) {
+		resp.send("error");
+	}
+});
+
+app.post("/contacts", async (req: Request, resp: Response) => {
+	try {
+		const contactsWorker: Contacts.Worker = new Contacts.Worker();
+		const contact: IContact = await contactsWorker.addContact(req.body);
+		resp.json(contact);
+	} catch (inError) {
+		resp.send("error");
+	}
+});
+
+app.delete("/contacts/:id", async (req: Request, resp: Response) => {
+	try {
+		const contactsWorker: Contacts.Worker = new Contacts.Worker();
+		await contactsWorker.deleteContact(req.params.id);
+		resp.send("ok");
+	} catch (inError) {
+		resp.send("error");
+	}
+});
