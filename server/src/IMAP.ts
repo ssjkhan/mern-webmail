@@ -13,4 +13,3 @@ export class Worker {
 }
 export class IMailbox {}
 export class IMessage {}
-export default {};
