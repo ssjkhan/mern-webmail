@@ -10,13 +10,13 @@ export class Worker {
 		this.serverInfo = serverInfo_;
 	}
 	sendMessage(options: SendMailOptions): Promise<string> {
-		return new Promise((resolve, reject) => {
+		return new Promise<string>((resolve: any, reject) => {
 			const transport: Mail = nodemailer.createTransport(this.serverInfo.smtp);
 			transport.sendMail(options, (err: Error | null, info: SentMessageInfo) => {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(err);
+					resolve();
 				}
 			});
 		});
