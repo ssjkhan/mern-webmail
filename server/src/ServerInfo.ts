@@ -20,3 +20,5 @@ const rawInfo: string = fs.readFileSync(
 );
 export let serverInfo: IServerInfo;
 serverInfo = JSON.parse(rawInfo);
+
+export const PORT = 8080;

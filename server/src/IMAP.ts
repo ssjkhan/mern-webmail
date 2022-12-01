@@ -21,8 +21,7 @@ export interface IMailbox {
 	path: string;
 }
 
-process.env.Node_TLS_REJECT_UNAUTHORIZED = "0";
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 export class Worker {
 	serverInfo: IServerInfo;
 
@@ -31,17 +30,24 @@ export class Worker {
 	}
 
 	async connectToServer(): Promise<any> {
+		console.log("Trying to connect to Server");
 		const client: any = new ImapClient.default(
 			this.serverInfo.imap.host,
 			this.serverInfo.imap.port,
 			{ auth: this.serverInfo.imap.auth }
 		);
+		// const client: any = new ImapClient.default("localhost", 8080);
 
 		client.logLevel = client.LOG_LEVEL_NONE;
 		client.onerror = (err: Error) => {
 			console.log("IMAP.Worker.listmailboxes(): Connection Error", err);
 		};
-		await client.connect();
+		client
+			.connect()
+			.then((res: any) => {
+				console.log("Connected to server");
+			})
+			.catch(console.log("Couldn't connect"));
 		return client;
 	}
 

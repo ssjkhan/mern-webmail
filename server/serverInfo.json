@@ -1,12 +1,12 @@
 {
 	"smtp": {
-		"host": "mail.mydomain.com",
-		"port": 999,
-		"auth": { "user": "user@domain.com", "pass": "xxx" }
+		"host": "localhost",
+		"port": 8081,
+		"auth": { "user": "testuser", "pass": "testpass" }
 	},
 	"imap": {
-		"host": "mail.mydomain.com",
-		"port": 999,
-		"auth": { "user": "user@domain.com", "pass": "xxx" }
+		"host": "localhost",
+		"port": 8082,
+		"auth": { "user": "testuser", "pass": "testpass" }
 	}
 }

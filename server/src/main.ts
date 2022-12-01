@@ -1,10 +1,11 @@
 import path from "path";
 import express, { Express, NextFunction, Request, Response } from "express";
-import { serverInfo } from "./ServerInfo";
+import { PORT, serverInfo } from "./ServerInfo";
 import * as IMAP from "./IMAP";
 import * as SMTP from "./SMTP";
 import * as Contacts from "./contacts";
 import { IContact } from "./contacts";
+import * as testImap from "./testImap";
 
 // Initialize App
 const app: Express = express();
@@ -29,12 +30,17 @@ app.use(function (
 	inNext();
 });
 
+app.get("/", (req, resp) => {
+	resp.send("Server is up\n");
+});
+
 app.get("/mailboxes", async (req: Request, resp: Response) => {
 	try {
 		const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
 		const mailboxes: IMAP.IMailbox[] = await imapWorker.listMailboxes();
 		resp.json(mailboxes);
 	} catch (error) {
+		console.log(error);
 		resp.send("error");
 	}
 });
@@ -53,7 +59,7 @@ app.get("/mailboxes/:mailbox", async (req: Request, resp: Response) => {
 app.get("/messages/:mailbox/:id", async (req: Request, resp: Response) => {
 	try {
 		const imapWorker: IMAP.Worker = new IMAP.Worker(serverInfo);
-		const messageBody: string = await imapWorker.getMessageBody({
+		const messageBody: string | undefined = await imapWorker.getMessageBody({
 			mailbox: req.params.mailbox,
 			id: parseInt(req.params.id, 10),
 		});
@@ -113,3 +119,5 @@ app.delete("/contacts/:id", async (req: Request, resp: Response) => {
 		resp.send("error");
 	}
 });
+
+app.listen(PORT);
