@@ -30,24 +30,19 @@ export class Worker {
 	}
 
 	async connectToServer(): Promise<any> {
-		console.log("Trying to connect to Server");
 		const client: any = new ImapClient.default(
 			this.serverInfo.imap.host,
 			this.serverInfo.imap.port,
 			{ auth: this.serverInfo.imap.auth }
 		);
-		// const client: any = new ImapClient.default("localhost", 8080);
 
 		client.logLevel = client.LOG_LEVEL_NONE;
 		client.onerror = (err: Error) => {
 			console.log("IMAP.Worker.listmailboxes(): Connection Error", err);
 		};
-		client
-			.connect()
-			.then((res: any) => {
-				console.log("Connected to server");
-			})
-			.catch(console.log("Couldn't connect"));
+
+		await client.connect();
+
 		return client;
 	}
 

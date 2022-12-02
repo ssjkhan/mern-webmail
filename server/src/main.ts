@@ -7,6 +7,10 @@ import * as Contacts from "./contacts";
 import { IContact } from "./contacts";
 import * as testImap from "./testImap";
 
+// Initialize Test Imap server
+
+const testImapServer = testImap;
+
 // Initialize App
 const app: Express = express();
 
