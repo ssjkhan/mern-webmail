@@ -5,11 +5,12 @@ import * as IMAP from "./IMAP";
 import * as SMTP from "./SMTP";
 import * as Contacts from "./contacts";
 import { IContact } from "./contacts";
-import * as testImap from "./testImap";
+import * as testServers from "./testServers";
 
 // Initialize Test Imap server
 
-const testImapServer = testImap;
+const testImapServer = testServers.imapServer;
+const testSmtpServer = testServers.smtpServer;
 
 // Initialize App
 const app: Express = express();
@@ -20,14 +21,10 @@ app.use(express.json());
 // static path way
 app.use("/", express.static(path.join(__dirname, "../../client/dist")));
 
-app.use(function (
-	inRequest: Request,
-	inResponse: Response,
-	inNext: NextFunction
-) {
-	inResponse.header("Access-Control-Allow-Origin", "*");
-	inResponse.header("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
-	inResponse.header(
+app.use(function (req: Request, resp: Response, inNext: NextFunction) {
+	resp.header("Access-Control-Allow-Origin", "*");
+	resp.header("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
+	resp.header(
 		"Access-Control-Allow-Headers",
 		"Origin,X-Requested-With,Content-Type,Accept"
 	);
