@@ -9,6 +9,18 @@ export class Worker {
 
 		return resp.data;
 	}
+
+	async addContact(contact: IContact): Promise<IContact> {
+		const resp: AxiosResponse = await axios.post(
+			`${config.serverAddress}/contacts`,
+			contact
+		);
+		return resp.data;
+	}
+
+	async deleteContact(id: any): Promise<void> {
+		await axios.delete(`${config.serverAddress}/contacts/${id}`);
+	}
 }
 
 export interface IContact {
