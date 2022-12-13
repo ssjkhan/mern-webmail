@@ -130,5 +130,48 @@ export function createState(parentComponent) {
 				contactEmail: email,
 			});
 		}.bind(parentComponent),
+
+		fieldChangeHandler: function (event: any): void {
+			if (event.target.id === "contactName" && event.target.value.length > 16) {
+				return;
+			}
+			this.setState({
+				[event.target.id]: event.target.value,
+			});
+		}.bind(parentComponent),
+
+		saveContact: async function (): Promise<void> {
+			const cl = this.state.contacts.slice(0);
+			this.state.showHidePleaseWait(true);
+			const contactsWorker: Contacts.Worker = new Contacts.Worker();
+			const contact: Contacts.IContact = await contactsWorker.addContact({
+				name: this.state.contactName,
+				email: this.state.contactEmail,
+			});
+			this.state.showHidePleaseWait(false);
+			cl.push(contact);
+			this.setState({
+				contacts: cl,
+				contactID: null,
+				contactName: "",
+				contactEmail: "",
+			});
+		}.bind(parentComponent),
+
+		deleteContact: async function (): Promise<void> {
+			this.state.showHidePleaseWait(true);
+			const contactsWorker: Contacts.Worker = new Contacts.Worker();
+			await contactsWorker.deleteContact(this.state.contactID);
+			this.state.showHidePleaseWait(false);
+			const cl = this.state.contacts.filter(
+				(inElement) => inElement._id != this.state.contactID
+			);
+			this.setState({
+				contacts: cl,
+				contactID: null,
+				contactName: "",
+				contactEmail: "",
+			});
+		}.bind(parentComponent),
 	};
 }
