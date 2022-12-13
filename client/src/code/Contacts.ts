@@ -1,12 +1,19 @@
+import axios, { AxiosResponse } from "axios";
+import config from "./config";
+
 export class Worker {
-	listContacts() {
-		return [];
+	async listContacts(): Promise<IContact[]> {
+		const resp: AxiosResponse = await axios.get(
+			`${config.serverAddress}/contacts`
+		);
+
+		return resp.data;
 	}
 }
 
-export class IContact {
-	_id = null;
-	name = null;
-	email = null;
+export interface IContact {
+	_id?;
+	name: string;
+	email: string;
 }
 export default Worker;
