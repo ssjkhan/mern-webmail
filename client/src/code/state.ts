@@ -173,5 +173,22 @@ export function createState(parentComponent) {
 				contactEmail: "",
 			});
 		}.bind(parentComponent),
+
+		showMessage: async function (message: IMAP.IMessage): Promise<void> {
+			this.state.showHidePleaseWait(true);
+			const imapWorker: IMAP.Worker = new IMAP.Worker();
+			const messageBody: String = await imapWorker.getMessageBody(
+				message.id,
+				this.state.currentMailbox
+			);
+			this.state.showHidePleaseWait(false);
+			this.setState({
+				currentView: "message",
+				messageFrom: message.from,
+				messageTo: "",
+				messageSubject: message.subject,
+				messageBody: messageBody,
+			});
+		}.bind(parentComponent),
 	};
 }
