@@ -83,5 +83,13 @@ export function createState(parentComponent) {
 				contactName: "",
 			});
 		}.bind(parentComponent),
+
+		setCurrentMailbox: function (path: string): void {
+			this.setState({
+				currentView: "welcome",
+				currentMailbox: path,
+			});
+			this.state.getMessages(path);
+		}.bind(parentComponent),
 	};
 }
