@@ -11,7 +11,9 @@
 		"jsx": "react",
 		"allowJs": true,
 		"baseUrl": "./",
-		"paths": { "components/*": ["src/components/*"] }
+		"paths": {
+			"components/*": ["src/code/components/*"]
+		}
 	},
 	"exclude": ["node_modules", "dist/**/*", "tsconfig.json"]
 }
