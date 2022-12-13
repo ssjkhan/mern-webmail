@@ -1,2 +1,4 @@
 #ignore compiled files
 **/dist/
+
+**/sample/
