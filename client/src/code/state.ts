@@ -121,5 +121,14 @@ export function createState(parentComponent) {
 				messages: cl,
 			});
 		},
+
+		showContact: function (id: string, name: string, email: string): void {
+			this.setState({
+				currentView: "contact",
+				contactID: id,
+				contactName: name,
+				contactEmail: email,
+			});
+		}.bind(parentComponent),
 	};
 }
