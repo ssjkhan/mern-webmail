@@ -13,7 +13,7 @@ async function getMailboxes() {
 	const imapWorker: IMAP.Worker = new IMAP.Worker();
 	const mailboxes: IMAP.IMailbox[] = await imapWorker.listMailboxes();
 	mailboxes.forEach((inMailbox) => {
-		// baseComponent.state.addMailboxToList(inMailbox);
+		baseComponent.state.addMailboxToList(inMailbox);
 	});
 }
 
@@ -22,8 +22,8 @@ getMailboxes().then(function () {
 		const contactsWorker: Contacts.Worker = new Contacts.Worker();
 		const contacts: Contacts.IContact[] = await contactsWorker.listContacts();
 		contacts.forEach((contact) => {
-			// baseComponent.state.addContactToList(contact);
+			baseComponent.state.addContactToList(contact);
 		});
 	}
-	// getContacts().then(() => baseComponent.state.showHidePleaseWait(false));
+	getContacts().then(() => baseComponent.state.showHidePleaseWait(false));
 });
