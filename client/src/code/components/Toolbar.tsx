@@ -1,9 +1,30 @@
 import React from "react";
 
-class Toolbar extends React.Component {
-	render() {
-		return <p>This is Toolbar Component</p>;
-	}
-}
+import Button from "@material-ui/core/Button";
+import NewContactIcon from "@material-ui/icons/ContactMail";
+import NewMessageIcon from "@material-ui/icons/Email";
+
+const Toolbar = ({ state }) => {
+	<div>
+		<Button
+			variant="contained"
+			color="primary"
+			size="small"
+			style={{ marginRight: 10 }}
+			onClick={() => state.showComposeMessage("new")}
+		>
+			<NewMessageIcon style={{ marginRight: 10 }} /> New Message
+		</Button>
+		<Button
+			variant="contained"
+			color="primary"
+			size="small"
+			style={{ marginRight: 10 }}
+			onClick={() => state.showAddContact("new")}
+		>
+			<NewContactIcon style={{ marginRight: 10 }} /> New Contact
+		</Button>
+	</div>;
+};
 
 export default Toolbar;
