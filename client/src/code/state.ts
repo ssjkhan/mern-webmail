@@ -2,6 +2,7 @@ import * as IMAP from "./IMAP";
 import * as SMTP from "./SMTP";
 import * as Contacts from "./Contacts";
 import config from "./config";
+import { ThreeDRotationSharp } from "@material-ui/icons";
 
 export function createState(parentComponent) {
 	return {
@@ -188,6 +189,36 @@ export function createState(parentComponent) {
 				messageTo: "",
 				messageSubject: message.subject,
 				messageBody: messageBody,
+			});
+		}.bind(parentComponent),
+
+		sendMessage: async function (): Promise<void> {
+			this.state.showHidePleaseWait(true);
+			const smtpWorker: SMTP.Worker = new SMTP.Worker();
+			await smtpWorker.sendMessage(
+				this.state.messageTo,
+				this.state.messageFrom,
+				this.state.messageSubject,
+				this.state.messageBody
+			);
+			this.state.showHidePleaseWait(false);
+			this.setState({ currentView: "welcome" });
+		}.bind(parentComponent),
+
+		deleteMessage: async function (): Promise<void> {
+			this.state.showHidePleaseWait(true);
+			const imapWorker: IMAP.Worker = new IMAP.Worker();
+			await imapWorker.deleteMessage(
+				this.state.messageID,
+				this.state.currentMailbox
+			);
+			this.state.showHidePleaseWait(false);
+			const cl = this.state.messages.filter((el) => {
+				el.id! + this.state.messageID;
+			});
+			this.setState({
+				messages: cl,
+				currentView: "welcome",
 			});
 		}.bind(parentComponent),
 	};
