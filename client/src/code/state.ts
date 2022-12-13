@@ -91,5 +91,35 @@ export function createState(parentComponent) {
 			});
 			this.state.getMessages(path);
 		}.bind(parentComponent),
+
+		getMessages: async function (path: string): Promise<void> {
+			this.state.showHidePleaseWait(true);
+			const imapWorker: IMAP.Worker = new IMAP.Worker();
+			const messages: IMAP.IMessage[] = await imapWorker.listMessages(path);
+			this.state.showHidePleaseWait(false);
+			this.state.clearMessages();
+			messages.forEach((message) => {
+				this.state.addMessageToList(message);
+			});
+		}.bind(parentComponent),
+
+		clearMessages: function (): void {
+			this.setState({
+				messages: [],
+			});
+		}.bind(parentComponent),
+
+		addMessageToList: function (message: IMAP.IMessage): void {
+			const cl = this.state.messages.slice(0);
+			cl.push({
+				id: message.id,
+				date: message.date,
+				from: message.from,
+				subject: message.subject,
+			});
+			this.setState({
+				messages: cl,
+			});
+		},
 	};
 }
