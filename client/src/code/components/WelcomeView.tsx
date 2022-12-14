@@ -1,9 +1,18 @@
 import React from "react";
 
-class WelcomeView extends React.Component {
-	render() {
-		return <p>This is WelcomeView Component</p>;
-	}
-}
+const WelcomeView = ({ state }) => {
+	return (
+		<div
+			style={{
+				position: "relative",
+				top: "40%",
+				textAlign: "center",
+				color: "#ff0000",
+			}}
+		>
+			<h1>Welcome to MailBag!</h1>
+		</div>
+	);
+};
 
 export default WelcomeView;
